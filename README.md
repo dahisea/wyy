@@ -1,28 +1,3 @@
-Skip to content
-dahisea
-/
-Auto_send_werua_ap
-Public
-forked from zhhenwj/AutoApiSR
-e5a
-
-dahi.icu/
- 1 star  155 forks
-Code
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-This branch is 4826 commits ahead, 4977 commits behind zhhenwj:master.
-Latest commit
-@waterelegance
-waterelegance
-…
-1 hour ago
-Git stats
-Files
 README.md
 [Update time] Wednesday, February 10, 2021
 
