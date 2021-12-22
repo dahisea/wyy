@@ -1,229 +1,42 @@
-
-> [项目 GitHub 地址](https://github.com/Secriy/CloudMusic-LevelUp)
-
-## 脚本功能
-
-1. 登录网易云音乐
-2. 执行签到，并显示奖励的积分数值
-3. 刷音乐播放量，返回具体值
-4. 使用 GitHub Actions 部署脚本
-5. 支持腾讯云函数部署脚本
-
-## 使用方式
-
-### 安装依赖
-
-```shell
-pip install -r requirements.txt
-```
-
-### 执行脚本
-
-脚本使用命令行参数输入变量，其中手机号和密码为必填字段，其余均为可选字段。
-
-```shell
-# python action.py -h 查看usage
-usage: action.py [-h] [-s SC_KEY] [-t TG_BOT_KEY TG_BOT_KEY] [-b BARK_KEY] [-w WECOM_KEY WECOM_KEY WECOM_KEY] [-p PUSH_PLUS_KEY] phone password
-
-positional arguments:
-  phone                 Your Phone Number.
-  password              The plaint text or MD5 value of the password.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -s SC_KEY             The SCKEY of the Server Chan.
-  -t TG_BOT_KEY TG_BOT_KEY
-                        The Token and Chat ID of your telegram bot.
-  -b BARK_KEY           The key of your bark app.
-  -w WECOM_KEY WECOM_KEY WECOM_KEY
-                        Your Wecom ID, App-AgentID and App-Secrets.
-  -p PUSH_PLUS_KEY      The token of your pushplus account.
-```
-
-手机号默认国际电话区号为中国大陆（+86），如果是海外用户请将手机号字段写为`区号+手机号`的格式，如`852+12343123`，国内用户无需此操作。
-
-密码可以为明文或明文的 MD5 值，脚本会自动判断明文密码并进行 MD5 计算。
-
-MD5 值计算可以在[MD5 在线加密](https://md5jiami.51240.com/)上进行，取 32 位小写值
-
-![](README/image-20200829112617823.png)
-
-示例：
-
-```shell
-python .\action.py 1xx014x4636 pass123456
-```
-
-```shell
-python .\action.py 1xx014x4636 1xxx2xx324x65fx6xb22846ea8xcx0x7
-```
-
-执行结果：
-
-![image-20210428144956285](README/image-20210428144956285.png)
-
-### 多账号
-
-脚本支持多账号，在指定参数时按顺序以`,`（注意为英文逗号）分割多个账号和密码：
-
-```shell
-python .\action.py 1xx014x4636,2xx011x4226 1xxx2xx324x65fx6xb22846ea8xcx0x7,2xxx41x324x34fx6xb11546ea4xcx1x2
-```
-
-### 消息推送
-
-脚本提供了多种消息推送渠道供选择使用，便于用户查看执行结结果。以下多个推送方式可以同时多选使用。
-
-#### Server 酱 Turbo 推送
-
-使用 Server 酱 Turbo 版可以绑定微信，将脚本每次的运行结果推送到你的微信上。
-
-使用方法：
-
-1. 访问[Server 酱 Turbo 版官网](https://sct.ftqq.com/)，点击**登入**，使用微信扫码登录
-
-2. 登入成功后，按照网站上的说明选择消息通道，如**方糖服务号**（于 2021 年 4 月停止服务）
-
-3. 点击**SendKey**，找到自己的 SendKey，并复制
-
-4. 执行脚本时带参数`-s`指定 SendKey
-
-用例：
-
-```shell
-python action.py [手机号] [32位MD5密码加密值] -s [SendKey]
-```
-
-示例：
-
-```shell
-python action.py 1xx014x4636 1xxx2xx324x65fx6xb22846ea8xcx0x7 -s SSS111111T111112f3e421
-```
-
-#### Telegram Bot 推送
-
-使用 Telegram 机器人按时推送脚本执行结果。
-
-使用方法：
-
-1. 创建 Telegram 机器人并获取机器人 Token 以及个人账户的 Chat ID
-2. 执行脚本时指定参数`-t`，其后输入 Token 和 Chat ID 两个参数，顺序固定
-
-示例：
-
-```shell
-python action.py 1xx014x4636 1xxx2xx324x65fx6xb22846ea8xcx0x7 -t 1172135555:AAAABBskKAAAeiE-BBacB1baODj1ccchcMc 1231315343
-```
-
-#### Bark 推送
-
-使用 Bark App 实现推送（建议 iOS/iPadOS 用户使用）。
-
-使用方法：
-
-1. 安装 Bark 移动端程序
-2. 复制应用内的示例 URL 并截取其中的 22 位随机字符串
-3. 执行脚本时指定参数`-b`，后接上述 22 位字符串
-
-示例：
-
-```shell
-python action.py 1xx014x4636 1xxx2xx324x65fx6xb22846ea8xcx0x7 -b aaaaaaaaaaaaaaaaaaaaaa
-```
-
-#### pushplus 微信公众号推送
-
-使用[pushplus](http://www.pushplus.plus/)平台进行推送。
-
-使用方法：
-
-1. 访问[pushplus](http://www.pushplus.plus/)官网，登录
-2. 找到**一对一推送**，并复制你的**token**
-3. 执行脚本时指定参数`-p`，后接上述 token 值
-
-示例：
-
-```shell
-python action.py 1xx014x4636 1xxx2xx324x65fx6xb22846ea8xcx0x7 -p aaa6aac77dc1111c2d22c2345555242e
-```
-
-#### 企业微信推送
-
-使用方法:
-
-1. 配置企业微信，获取企业 ID、应用 ID、应用 Secret
-2. 执行脚本时指定参数`-w`，其后输入企业 ID、应用 ID 和应用 Secrets 三个参数，顺序固定
-
-用例：
-
-```shell
-python action.py 1xx014x4636 1xxx2xx324x65fx6xb22846ea8xcx0x7 -w [企业ID] [应用ID] [应用Secrets]
-```
-
-## GitHub Actions 部署
-
-### 1. Fork 该仓库
-
-### 2. 创建 Secrets
-
-- 创建 PHONE，填入手机号，多账号以`,`分割（必填）
-- 创建 PASSWORD，填入 32 位 MD5 密码加密值，多账号以`,`分割（与 PASSWORD_PLAIN 字段二选一）
-- 创建 PASSWORD_PLAIN，填入明文密码，多账号以`,`分割（与 PASSWORD 字段二选一）
-- 创建 SC_KEY（Server 酱 SendKey，可选）
-- 创建 TG_BOT_KEY（Telegram 机器人推送参数，以空格分割多个参数，可选）
-- 创建 BARK_KEY（Bark 推送参数，可选）
-- 创建 WECOM_KEY （企业微信推送参数，以空格分割多个参数，可选）
-- 创建 PUSH_PLUS_KEY（pushplus 推送参数，可选）
-
-![](README/image-20201110002853759.png)
-
-### 3. 启用 Action
-
-点击 Actions，选择 **I understand my workflows, go ahead and enable them**
-
-**由于 GitHub Actions 的限制，直接 fork 来的仓库不会自动执行！！！**
-
-必须手动修改项目提交上去，最简单的方法就是修改下图的 README.md 文件（右侧有网页端编辑按钮）。
-
-![image-20201022185210937](README/image-20201022185210937.png)
-
-随便修改什么都行，修改完 commit 就可以了。
-
-之后**每天 0 点**会自动执行一次脚本
-
-![](README/image-20200829120815423.png)
-
-![](README/image-20200829120847583.png)
-
-### 4. 手动执行
-
-GitHub 有手动执行的功能，点击下图 Run workflow 即可。
-
-![](README/image-20201022192517489.png)
-
-### 5. 多次执行（可选）
-
-如果觉得每天刷的听歌量达不到要求，可以尝试每天多次执行的解决方案，修改 _.github/workflows/action.yml_ 内的 _cron_ 值为 **"0 4/16 \* \* \*"** ，即在每天的北京时间 0 点和 12 点执行。
-
-## 腾讯云函数部署
-
-具体步骤参考[腾讯云函数部署CloudMusic-LevelUp脚本](https://blog.secriy.com/2021/06/12/%E8%85%BE%E8%AE%AF%E4%BA%91%E5%87%BD%E6%95%B0%E9%83%A8%E7%BD%B2CloudMusic-LevelUp%E8%84%9A%E6%9C%AC/)
-
-## 注意事项
-
-- 脚本只支持 Python3 环境
-- 手机号列表和密码列表信息必须按顺序一一对应
-- 网易云音乐限制每天最多计算 300 首
-- 必须手动修改内容，不然不会自动执行！
-- 为了方便他人学习研究，脚本保留了网易云音乐完整的表单加密算法
-- Server 酱的应用场景取决于个人，请跟据自己的需求选择消息通道并进行配置，如在使用和配置方面有疑问，可以提出 Issue 或直接联系 Server Chan 管理员
-
-## TODO
-
-- 脚本功能太少，今后考虑开发比较实用的新功能
-
-## 联系方式
-
-### 微信
-
-![image](README/IMG_3483.png)
+Skip to content
+dahisea
+/
+Auto_send_werua_ap
+Public
+forked from zhhenwj/AutoApiSR
+e5a
+
+dahi.icu/
+ 1 star  155 forks
+Code
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+This branch is 4826 commits ahead, 4977 commits behind zhhenwj:master.
+Latest commit
+@waterelegance
+waterelegance
+…
+1 hour ago
+Git stats
+Files
+README.md
+[Update time] Wednesday, February 10, 2021
+
+[Effective time] Wednesday, February 10, 2021
+
+[Special reminder] Dear dahi users (hereinafter referred to as "you"), welcome to register and use the services provided by Guangdong dahi Technology Co., Ltd. (hereinafter referred to as "dahi Technology" or "this website"). If you want to access or use the services provided by this website (including directly logging in to use the services of this website through the account of other cooperative websites), you must carefully read the "115 User Service Agreement" (hereinafter referred to as the "Agreement") in advance, especially with Your rights and interests have a major relationship, involving clauses that exempt or limit 115 science and technology liability, clauses restricting user rights, agreement on dispute resolution methods, judicial jurisdiction, and applicable laws. In this agreement, restrictions and exemptions may be bolded or underlined to remind you to pay attention.
+
+If you have any questions about the content of this agreement, please contact us at law@115.com. If you have already used the services of this website, you may not make any form of defense on the grounds that you have not read the content of this agreement or have not obtained 115 Tech's answer to your inquiry.
+
+Minors shall be accompanied by their legal guardians to review and agree to the performance of this agreement. The minors shall be deemed to have obtained the approval of the legal guardians when they exercise and perform their rights and obligations under this agreement.
+
+Basic Terms 1.1 Please read this agreement carefully. When you start or continue to use any service provided by this website, you are agreeing to the terms of this agreement, including accepting any amendments made by 115 Technology to the terms of this agreement at any time. This agreement is only established and effective between you and 115 Technology. If you do not agree to the terms of this agreement and/or 115 Technology’s amendments to it at any time, you should not use or voluntarily cancel the services provided by 115 Technology. 1.2 You understand and agree that 115 Tech has the right to unilaterally amend the terms of this agreement at any time, and any amendments will be promptly announced on the 115 Tech official website. Once the revised agreement terms are published on the official website, they will effectively replace the original agreement terms. 1.3 115 Technology only provides related network services, in addition to the equipment related to related network services (such as computers, mobile phones, modems and other devices related to access to the Internet or mobile networks) and the required fees (such as The Internet fees paid for accessing the Internet, telephone fees and traffic fees for using the mobile network, etc.) shall be borne by the users themselves. 1.4 Once the user has registered for the 115 account, he has the right to use the services provided by 115 Technology through the account, unless the relevant services require separate activation of permissions or other restrictions on use conditions. When a user uses 115 technology related services, the user's behavior is deemed to be his agreement to the service terms of the related service and various announcements issued in the related service.
+Service content (hereinafter referred to as "the service") 2.1 115 Technology is a cloud storage technology service provider. 2.2 115 Technology provides users with online services such as personal data storage and management through cloud storage technology. It does not directly provide users with content, and does not make any changes or edits to users' transmission content. 2.3 The ownership and operation rights of this service belong to 115 Technology, which has the right to interpret business rules and activity rules within the scope of laws and regulations. 2.4 The user agrees: The user will use the corresponding service in accordance with the relevant rules regarding storage and other service life, file restrictions, storage space size restrictions, bandwidth flow restrictions, etc., announced or actually implemented by 115 Technology. At the same time, the user agrees that 115 Technology can unilaterally change the aforementioned relevant rules and other rules related to this service according to the needs of its own business without further notice to the user. In order to fully protect the legitimate rights and interests of the user, the user's existing stored data will not be forcibly deleted. . 2.5 115 Technology cannot control the use of this service to produce, copy, publish, transmit, and disseminate the content stored by users, nor can it fully monitor or control the user's use behavior. Therefore, 115 Technology does not guarantee the legality and correctness of the content stored by users , Completeness, authenticity, or quality; you have foreseen that when you use this service, you may be exposed to unpleasant, inappropriate, or offensive content, and agree to make your own judgment and assume all risks without relying on 115 Technology; when you find illegal content stored by other users while using this service, you have the right to report to 115 Technology according to the contact information described in this agreement. 2.6 When 115 Technology provides services, it may charge certain fees for some services now or in the future. In this case, 115 Technology will make a clear prompt on the relevant page. If the user does not agree to pay such fees, 115 Technology has the right not to provide the user with the corresponding value-added services, or the user cannot continue to use the related services after the start of the charge. The user understands and knows that in the process of paying for the value-added services provided by 115 Technology, a third-party payment system may appear.
+Account usage instructions 3.1 Account usage rights 3.1.1 Users can use the services provided by 115 Technology by registering 115 accounts on this website or through accounts on other cooperative websites. To use the services provided by 115 Technology through the accounts of other cooperative websites, you need to fill in the information according to the prompts and accept the constraints of this agreement. At the same time, users need to understand that other Internet companies will also customize a professional user service system for 115 Technology, that is, the service content obtained by users through 115 Technology may come from a third-party company. Once the user accepts the network service content provided by the third-party company, The user should abide by the agreement made by the third-party company on its services. If a third-party company accesses the 115 Technology system and its existing users can use the services provided by 115 Technology, the existing user becomes a 115 Technology user, and its account automatically becomes a 115 account. The existing user agrees to also abide by the agreement of this agreement as the user directly registered in the 115 technology system. However, for these existing users, 115 Technology may provide a familiar website interface during the service process. This process is only for the convenience of users to accept the service. The relationship between existing users and 115 Technology shall still be subject to this agreement. Agreed. 3.1.2 The user shall provide complete, true, accurate and up-to-date personal information for the registration of 115 accounts, and shall not register with false or fraudulent identity information, and shall conduct real-name authentication in accordance with the regulations of 115 Technology. Users shall not use names that violate national laws and regulations or infringe the legal rights and interests of third parties, such as: (1) Any discriminatory (including but not limited to ethnic discrimination, geographical discrimination, gender discrimination, etc.); (2) Exaggerated propaganda and deceptive; (3) Things that are harmful to socialist morals and customs or cause other adverse effects; (4) Names that are ambiguous, misleading, or infringe on the legitimate rights and interests of other users or third parties. If the registration information is untrue or the use of a name that violates laws and regulations is the responsibility of the user himself, 115 Technology does not bear any responsibility, and has the right to suspend or terminate the provision of services to such users without prior notice to the user .
+3.1.3 If the user has successfully registered or used 115 technology services through the accounts of other cooperative websites, 115 technology will give the user a uniquely identified 115 account, and the ownership of the 115 account belongs to 115 technology. In the case of no obvious evidence to the contrary, the 115 account The right to use belongs to the real-name certifier. 3.1.4 If the user account and password are illegally used by others or any other security issues occur, the user should immediately notify 115 Technology. 115 Technology has the right to require users to provide valid identity verification information after receiving notices from users requesting to take measures to suspend their account login and use. 115 Technology verifies that the effective personal identity verification information provided by the user is consistent with the real-name authentication and registered identity information, and measures shall be taken to suspend the login and use of the user account in a timely manner. If the user does not provide their personal valid identity verification information or the personal valid identity verification information provided by the user is inconsistent with the real-name authentication and registered identity information, 115 Technology reserves the right to reject the user’s aforementioned request and reserve the right to suspend or terminate the service of the account . 115 Technology does not assume any responsibility for any loss caused by the user being appealed by others in an impersonal name. The user knows that the responsibility for keeping the 115 account and password lies with the user. 115 Technology only provides appeal services and does not promise any appeal results. 3.2 Account use restriction, suspension or termination 3.2.1 The 115 account is only for non-commercial use by the initial registrant. 115Tech prohibits account sharing, gifting, borrowing, renting, transfer or sale (except when the two parties sign a transfer agreement under the supervision of 115Tech). The account or password is lost due to the above reasons, and 115Tech reserves the right not to retrieve it. If 115 Technology finds that the user is not the initial registrant of the account, 115 Technology has the right to suspend the service, terminate the service, freeze the account or reclaim the account without notice, and the resulting measures include but are not limited to the user Data, space cards, etc. are emptied or cannot be retrieved, and all other losses are borne by the user. 115 Technology does not need to bear any responsibility to the initial application registrant of the account. If 115 Technology loses due to this, 115 Technology reserves the right to pursue the above-mentioned actors accordingly. The right to legal responsibility. 3.2.2 Users shall not obtain or purchase VIP membership services through illegal means such as account theft, stealing, exploiting 115 technology or other third-party system vulnerabilities, or through sales channels that are not authorized by 115 technology. 3.2.3 Users shall not tamper with this website or attack this website, or use 115 accounts for any abnormal use (such as hotlinking, pirating, stealing, etc.) or use the service in any way beyond the intended purpose of 115 technology, and shall not perform any Any behavior that interferes with the normal order of this website or interferes with the normal use of this service by other users shall not use the services provided by 115 Technology and cooperative third parties to users for any purpose that violates laws or public order and good customs. 3.2.4 Users must not use proxy IP addresses in an attempt to conceal their use of multiple registered accounts; they must not use multi-point login for the purpose of destroying a certain group or disturbing other users. 3.2.5 In order to make full use of 115 account resources, if you fail to log in for the first time after registering 115 account, or have not logged in for a long time, 115 Technology reserves the right to terminate the use of 115 account without notice. (1) If you do not log in for the first time for more than 5 consecutive days after registration, the 115 account may be recalled; (2) After registering for the initial login, if you fail to log in for more than 60 consecutive days, 115 accounts may be recycled; (3) If you have not logged in for more than 6 consecutive months, the 115 account may be recalled. If the user encounters the above situation, all the losses caused by the 115 technology recycling account, including but not limited to the user's storage data, space card, VIP coupon, etc., are emptied by the user.
+
+3.2.6 If the user violates the provisions of this agreement, 115 Technology has the right to follow this agreement or relevant laws and regulations, and based on 115 Technology’s independent judgment, without prior notice to the user, including but not limited to warning, suspension or termination of use , Cancellation of VIP membership service qualifications, recycling/closing of accounts and other measures, once the use is terminated, any information stored by the user on this website may not be restored. 115 Technology does not need to be liable to the user or any third party, and all the resulting The loss is borne by the user. 3.3 Every time the user finishes surfing the Internet or using other services, please close the relevant account appropriately, for example, safely log out of the 115 account used for login. 115 Technology does not assume any responsibility for account or password or illegal use by others due to hacking or user's fault. 4. User instructions 4.1 Users are particularly reminded that the use of the Internet must comply with relevant national policies and laws, such as criminal law, national security law, computer information system security protection regulations, trademark law, copyright law, etc., to protect national interests and national security. For illegal use of the Internet All responsibilities arising therefrom shall be borne by the user. 4.2 Users can only use the services provided by 115 Technology for non-commercial purposes. The user promises not to use or allow any other person to use the services provided by 115 Technology to engage in the following activities (including but not limited to): (1) Entering the computer information network or using computer information network resources without permission; (2) Delete, modify or add computer information network functions without permission; (3) Without permission, delete, modify or add data and applications stored, processed or transmitted in the computer information network; (4) Deliberately making and disseminating malicious programs or viruses, and other acts that disrupt and interfere with normal network information services; (5) Acts that attempt to circumvent 115 Technology’s security settings or network systems; (6) Any form of network monitoring, interception or attempt to intercept any information transmitted through the telecommunication system; (7) Constitute or induce that may be regarded as illegal, illegal or infringing on the rights of any third party; (8) Obtain the services or website information provided by 115 Technology in a way that causes 115 Technology’s computer systems or facilities to bear unreasonable load, or any behavior that may adversely affect the normal operation of the Internet or mobile network; (9) Restrict or hinder any other customers' normal use of this website and acceptance of the services of this website; (10) Unauthorized attempts to detect, scan, test 115 technology network systems or network weaknesses, or conduct other behaviors that undermine network security; (11) Install and use this service for commercial operation purposes, copy, change, modify, and link the data released into the memory of any terminal during the operation of this service and the interactive data between the client and the server during the operation of this service. Run or create any derivative works, including but not limited to the use of plug-ins, plug-ins or non-authorized third-party tools/services to access this service and related systems. (12) Without the written consent of 115 Technology, the unauthorized implementation of this website or related information of this service, including but not limited to the following acts: use, rent, lend, copy, modify, link, reprint, compile, publish, publish, Establish mirror sites, and develop derivative products, works, services, plug-ins, plug-ins, compatibility, interconnection, etc. related to this service without authorization; (13) Use this service in any other illegal way, for any illegal purpose, or in any way inconsistent with this agreement; (14) Other behaviors that endanger the security of computer information networks or that do not comply with generally accepted common practices related to the Internet and other networks. 4.3 The user uses this service to produce, copy, publish, transmit, transmit, disseminate, and store, including but not limited to information, data, text, software, music, audio, photos, graphics, videos, information, user registration data or other data (hereinafter (Referred to as "content"), shall not contain content that violates national laws and regulations, interferes with public order and good customs, infringes on the legal rights of other third parties, or interferes with the normal operation of the service, including but not limited to: 4.3.1 Contents prohibited by national laws and regulations: (1) Violation of the basic principles established by the Constitution; (2) Endanger national security, leak state secrets, and subvert national politics
