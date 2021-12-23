@@ -31,12 +31,7 @@ jobs:
     - name: Delete secrets config #删除机密
       run: | 
         rm -f io.md
-    - name: Commit #上传新的refresh_token到仓库
-      run: |
-        git config --global user.email AutoupdateRobot@email.com
-        git config --global user.name AutoupdateRobot
-        git add .
-        git commit -m "update new refresh_token" -a
+        touch io.md
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
