@@ -25,13 +25,15 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
-    - name: Install requests #安装requests
-      run: |
-        pip install requests
     - name: Delete secrets config #删除机密
       run: | 
         rm -f io.md
+
         touch io.md
+        cat >>io.md<<EOF
+001
+        EOF
+
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
