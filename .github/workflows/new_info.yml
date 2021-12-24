@@ -29,11 +29,7 @@ jobs:
       run: | 
         rm -f io.md
 
-        touch io.md
-        cat >>io.md<<EOF
-001
-        EOF
-
+        touch ioi.md
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
