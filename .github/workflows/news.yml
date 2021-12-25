@@ -1,5 +1,5 @@
-#更新refresh_toke
-name: update_refresh
+#更新
+name: update
 
 on: 
   release:
@@ -24,13 +24,9 @@ jobs:
     - name: Set up Python #安装python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.8
-    - name: Delete secrets config #删除机密
-      run: | 
-        rm -f io.md
-
-        touch ioi.md
-    - name: Push changes
+        python-version: 3.10.1
+    
+    - name: Push 
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
