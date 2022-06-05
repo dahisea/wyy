@@ -1,6 +1,6 @@
 https://github.com/dahisea/eyy
 [Update time] Wednesday, February 10, 2021
-
+cr nm sm fff
 [Effective time] Wednesday, February 10, 2021
 
 [Special reminder] Dear dahi users (hereinafter referred to as "you"), welcome to register and use the services provided by Guangdong dahi Technology Co., Ltd. (hereinafter referred to as "dahi Technology" or "this website"). If you want to access or use the services provided by this website (including directly logging in to use the services of this website through the account of other cooperative websites), you must carefully read the "115 User Service Agreement" (hereinafter referred to as the "Agreement") in advance, especially with Your rights and interests have a major relationship, involving clauses that exempt or limit 115 science and technology liability, clauses restricting user rights, agreement on dispute resolution methods, judicial jurisdiction, and applicable laws. In this agreement, restrictions and exemptions may be bolded or underlined to remind you to pay attention.
